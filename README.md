@@ -1,2 +1,13 @@
-# meerk40t-example-extension
-Example Extension for MeerK40t. 0.8.X+ MeerK40t versions.
+# meerk40t-example
+MeerK40t plugin for example
+
+
+Example MeerK40t plugin.
+
+* `example` prints "Hello World"
+
+
+# Installing
+
+* Download into a directory:
+* `$ pip install .`
