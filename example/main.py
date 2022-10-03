@@ -4,19 +4,20 @@ def module_plugin(module, lifecycle):
     This plugin attaches to the module/wxMeerK40t for the opening and closing of the gui. If the gui is never launched
     this plugin is never activated. wxMeerK40t is the gui wx.App object.
 
-    :param module:
-    :param lifecycle:
+    :param module: Module being attached to
+    :param lifecycle: lifecycle event being regarded.
     :return:
     """
+    print(f"module:example {lifecycle}")
     if lifecycle == 'module':
         # Responding to the "module" call makes this a module plugin for the specific module replied.
         return "module/wxMeerK40t"
-    elif lifecycle == 'module_opened':
-        pass
-    elif lifecycle == 'module_closed':
-        pass
+    elif lifecycle == 'module_open':
+        print("wxMeerK40t App was lauched.")
+    elif lifecycle == 'module_close':
+        print("wxMeerK40t App was closed.")
     elif lifecycle == 'shutdown':
-        pass
+        print("wxMeerK40t App shutdown.")
 
 
 def service_plugin(service, lifecycle):
