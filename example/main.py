@@ -1,16 +1,17 @@
 
 def module_plugin(module, lifecycle):
     """
-    This plugin attaches to the module/wxMeerK40t for the opening and closing of the gui. If the gui is never launched
-    this plugin is never activated. wxMeerK40t is the gui wx.App object.
+    This example plugin attaches to the module/wxMeerK40t for the opening and closing of the gui. If the gui is never
+    launched this plugin is never activated. wxMeerK40t is the gui wx.App object. If the module is loaded several times
+    each module will call this function with the specific `module`
 
-    :param module: Module being attached to
+    :param module: Specific module this lifecycle event is for.
     :param lifecycle: lifecycle event being regarded.
     :return:
     """
     print(f"module:example {lifecycle}")
     if lifecycle == 'module':
-        # Responding to the "module" call makes this a module plugin for the specific module replied.
+        # Responding to "module" makes this a module plugin for the specific module replied.
         return "module/wxMeerK40t"
     elif lifecycle == 'module_open':
         print("wxMeerK40t App was lauched.")
@@ -22,43 +23,47 @@ def module_plugin(module, lifecycle):
 
 def service_plugin(service, lifecycle):
     """
-    This plugin attaches to the lhystudios devices. Any lhystudios device has each lifecycle event passed to this
-    plugin. There may be more than one such driver.
+    This example plugin attaches to the lihuiyu device service. Every lihuiyu device will have each lifecycle event
+    passed to this plugin. There may be more than one such driver.
 
     :param service:
     :param lifecycle:
     :return:
     """
+    print(f"service:example {lifecycle}")
     if lifecycle == "service":
-        # Responding to the "service" call makes this a service plugin for the specific service replied.
+        # Responding to "service" makes this a service plugin for the specific services created via the provider
         return "provider/device/lhystudios"
     elif lifecycle == 'added':
         """
         Service is added to the list of services for this provider type. In our example we are checking the device
-        service for the lhystudios driver.
+        services for any lihuiyu devices. This occurs when ever the provider is used to create this service type.
         """
-        pass
+        print(f"A lihuiyu device was added: {service}")
     elif lifecycle == 'service_attach':
         """
-        Our given service is attached. The current context.device is the 'service' passed in this plugin.
+        Our given service is attached. The current context.device is the 'service' passed in this plugin. Only one
+        service maybe attached at any particular time. So our current device is the passed service.
         """
-        pass
+        print(f"A lihuiyu device was attached: {service}")
     elif lifecycle == 'assigned':
         """
         This is a plugin was started flagged to be assigned. For many drivers this launches their respective config
-        window.
+        window. This will usually happen if our driver was created in devices. It's triggered by setting the `assigned`
+        flag as true during activation.
         """
-        pass
+        print(f"A lihuiyu device assigned: {service}")
     elif lifecycle == 'service_detach':
         """
-        Our given service is no longer the context.device for the kernel.
+        Our given service is no longer the context.device for the kernel. This will happen if a different device is
+        being attached or all services are being shutdown.
         """
-        pass
+        print(f"A lihuiyu device was detached: {service}")
     elif lifecycle == 'shutdown':
         """
-        The service is shutdown.
+        The service is shutdown. This occurs if the service is removed or if the entire kernel is being shutdown.
         """
-        pass
+        print(f"A lihuiyu device was shutdown: {service.name}")
 
 
 def plugin(kernel, lifecycle):
